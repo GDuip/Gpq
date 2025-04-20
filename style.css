@@ -1,0 +1,188 @@
+/* --- Global Reset & Base Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Critical: Prevent scrollbars */
+    background-color: #1a1a1a; /* Dark background behind canvas */
+    color: #ffffff; /* Default text color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean sans-serif stack */
+    font-size: 16px; /* Base font size */
+}
+
+/* --- Canvas --- */
+#webglCanvas {
+    position: fixed; /* Take up full space */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block; /* Remove potential extra space */
+    z-index: 1; /* Render behind UI */
+    outline: none; /* Remove focus outline if canvas gets focus */
+    background: #000; /* Fallback background */
+}
+
+/* --- UI Container --- */
+#uiContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Render above canvas */
+    pointer-events: none; /* Allow clicks/touches to pass through to canvas by default */
+    display: flex; /* Use flexbox for alignment if needed, though most items are absolute */
+    flex-direction: column;
+    align-items: center; /* Centers overlays horizontally */
+    justify-content: center; /* Centers overlays vertically */
+}
+
+/* --- Heads-Up Display (HUD) --- */
+.hud {
+    position: absolute;
+    background: rgba(20, 20, 20, 0.7); /* Darker semi-transparent background */
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    pointer-events: auto; /* HUD elements usually don't need interaction */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    user-select: none; /* Prevent text selection */
+}
+
+#gameInfo {
+    top: 15px;
+    left: 15px;
+}
+
+#weaponInfo {
+    bottom: 15px;
+    right: 15px;
+    text-align: right;
+}
+
+/* --- Crosshair --- */
+#crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.65); /* Slightly transparent white */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    pointer-events: none; /* Must not block clicks */
+    user-select: none;
+}
+
+/* --- Overlays (Shared Styles) --- */
+.overlay {
+    position: absolute;
+    /* Centering using Flexbox on parent */
+    /* top: 50%; left: 50%; transform: translate(-50%, -50%); */
+    background: rgba(15, 15, 15, 0.92); /* Very dark, slightly transparent */
+    padding: 35px 50px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 320px;
+    max-width: 90%;
+    pointer-events: auto; /* Enable interaction within overlays */
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    animation: fadeInOverlay 0.3s ease-out forwards; /* Simple fade-in */
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+/* --- Overlay Content --- */
+.overlay h1 {
+    margin-bottom: 25px;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #efefef;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.overlay p {
+    margin-bottom: 18px;
+    font-size: 1.1rem;
+    color: #cccccc;
+    line-height: 1.5;
+}
+
+.overlay p span:first-child { /* Style the labels */
+    color: #a0a0a0;
+    margin-right: 8px;
+}
+
+/* --- Buttons within Overlays --- */
+.overlay button {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #3a3a3a; /* Dark grey */
+    color: #e0e0e0;
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin: 15px 5px 0 5px;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    min-width: 140px;
+}
+
+.overlay button:hover {
+    background-color: #4f4f4f;
+    border-color: #777;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.overlay button:active {
+    background-color: #2f2f2f;
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Specific Overlay Styling --- */
+
+/* Loading Screen */
+#loadingScreen {
+    /* Start visible - JS will hide it */
+    display: flex; /* Use flex to align content */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loadingProgress {
+    font-size: 1.3rem;
+    margin-top: 15px;
+    color: #cccccc;
+    min-width: 100px; /* Prevent text jumping */
+}
+
+/* Hide other overlays initially (JS controls visibility) */
+#pauseScreen,
+#gameOverScreen {
+    display: none;
+}
+
+/* --- Utility --- */
+/* Add classes for hiding/showing if needed by JS */
+.hidden {
+    display: none !important;
+}
