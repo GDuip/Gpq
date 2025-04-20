@@ -1,4 +1,4 @@
-import { GameEngine3D } from './core/GameEngine3D.js';
+import { GameEngine3D } from 'GameEngine3D.js';
 
 window.addEventListener('load', () => {
     const canvasId = 'webglCanvas';
