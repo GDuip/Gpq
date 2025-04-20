@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Advanced 3D Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Canvas for 3D Rendering -->
+    <canvas id="webglCanvas"></canvas>
+
+    <!-- UI Overlays -->
+    <div id="uiContainer">
+        <div id="gameInfo" class="hud">Initializing...</div>
+        <div id="crosshair">+</div>
+        <div id="gameOverScreen" class="overlay" style="display: none;">
+            <h1 data-i18n="gameOver">Game Over</h1>
+            <p><span data-i18n="finalScore">Final Score</span>: <span id="finalScoreValue">0</span></p>
+            <p><span data-i18n="finalWave">Reached Wave</span>: <span id="finalWaveValue">0</span></p>
+            <button id="restartButton" data-i18n="restartButton">Play Again</button>
+        </div>
+        <div id="pauseScreen" class="overlay" style="display: none;">
+            <h1 data-i18n="paused">Paused</h1>
+            <button id="resumeButton" data-i18n="resumeGame">Resume Game</button>
+        </div>
+         <div id="loadingScreen" class="overlay">
+             <h1 data-i18n="loading">Loading...</h1>
+             <div id="loadingProgress">0%</div>
+         </div>
+    </div>
+
+    <!-- Libraries (Load order can matter depending on dependencies) -->
+    <!-- Option 1: From local lib folder (adjust paths) -->
+    <!-- <script type="importmap">
+        {
+            "imports": {
+                "three": "./js/lib/three.module.js",
+                "cannon-es": "./js/lib/cannon-es.js"
+            }
+        }
+    </script> -->
+    <!-- Option 2: Via CDN (Example) -->
+     <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Main Game Logic (using modules) -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
