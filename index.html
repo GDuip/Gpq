@@ -1,57 +1,82 @@
 <!DOCTYPE html>
+<!-- Set language for accessibility -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Advanced 3D Game</title>
+    <!-- Responsive viewport, prevent zooming -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Prevent caching during development (remove for production) -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <title>Project Chimera | 3D Shooter</title> <!-- Replace with your game title -->
+
+    <!-- Link to CSS -->
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Canvas for 3D Rendering -->
-    <canvas id="webglCanvas"></canvas>
 
-    <!-- UI Overlays -->
-    <div id="uiContainer">
-        <div id="gameInfo" class="hud">Initializing...</div>
-        <div id="crosshair">+</div>
-        <div id="gameOverScreen" class="overlay" style="display: none;">
-            <h1 data-i18n="gameOver">Game Over</h1>
-            <p><span data-i18n="finalScore">Final Score</span>: <span id="finalScoreValue">0</span></p>
-            <p><span data-i18n="finalWave">Reached Wave</span>: <span id="finalWaveValue">0</span></p>
-            <button id="restartButton" data-i18n="restartButton">Play Again</button>
-        </div>
-        <div id="pauseScreen" class="overlay" style="display: none;">
-            <h1 data-i18n="paused">Paused</h1>
-            <button id="resumeButton" data-i18n="resumeGame">Resume Game</button>
-        </div>
-         <div id="loadingScreen" class="overlay">
-             <h1 data-i18n="loading">Loading...</h1>
-             <div id="loadingProgress">0%</div>
-         </div>
-    </div>
+    <!-- Favicon (replace with your icon) -->
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 
-    <!-- Libraries (Load order can matter depending on dependencies) -->
-    <!-- Option 1: From local lib folder (adjust paths) -->
-    <!-- <script type="importmap">
-        {
-            "imports": {
-                "three": "./js/lib/three.module.js",
-                "cannon-es": "./js/lib/cannon-es.js"
-            }
-        }
-    </script> -->
-    <!-- Option 2: Via CDN (Example) -->
-     <script type="importmap">
+    <!-- Import Map for ES Modules (adjust paths if hosting locally) -->
+    <script type="importmap">
         {
             "imports": {
                 "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
                 "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+                "cannon-es-debugger": "https://unpkg.com/cannon-es-debugger@1.0.0/dist/cannon-es-debugger.js",
                 "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
         }
     </script>
+</head>
+<body>
+    <!-- The Canvas where the 3D scene is rendered -->
+    <canvas id="webglCanvas" aria-label="Main game rendering area"></canvas>
 
-    <!-- Main Game Logic (using modules) -->
-    <script type="module" src="main.js"></script>
+    <!-- Container for all UI Overlays and HUD elements -->
+    <div id="uiContainer" role="application" aria-label="Game User Interface">
+
+        <!-- Heads-Up Display (HUD) Elements -->
+        <div id="gameInfo" class="hud" aria-live="polite" aria-atomic="true">
+            <!-- Content dynamically updated by UIManager.js -->
+            Initializing...
+        </div>
+        <div id="weaponInfo" class="hud" aria-live="polite" aria-atomic="true">
+            <span id="weaponNameValue"></span> | <span id="weaponAmmoValue">--/--</span>
+        </div>
+        <div id="crosshair" aria-hidden="true">+</div>
+
+        <!-- Loading Screen Overlay -->
+        <div id="loadingScreen" class="overlay" role="dialog" aria-modal="true" aria-labelledby="loadingTitle">
+            <h1 id="loadingTitle" data-i18n="loading">Loading...</h1>
+            <div id="loadingProgress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            <!-- Optional: Add a spinner animation here -->
+        </div>
+
+        <!-- Pause Screen Overlay -->
+        <div id="pauseScreen" class="overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+            <h1 id="pauseTitle" data-i18n="paused">Paused</h1>
+            <button id="resumeButton" data-i18n="resumeGame">Resume Game</button>
+            <!-- Optional: Add settings, quit buttons etc. -->
+        </div>
+
+        <!-- Game Over Screen Overlay -->
+        <div id="gameOverScreen" class="overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="gameOverTitle">
+            <h1 id="gameOverTitle" data-i18n="gameOver">Game Over</h1>
+            <p>
+                <span data-i18n="finalScore">Final Score</span>: <span id="finalScoreValue">0</span>
+            </p>
+            <p>
+                <span data-i18n="finalWave">Reached Wave</span>: <span id="finalWaveValue">0</span>
+            </p>
+            <button id="restartButton" data-i18n="restartButton">Play Again</button>
+        </div>
+
+    </div> <!-- End #uiContainer -->
+
+    <!-- Main Game Logic Entry Point (ensure it's loaded last and as a module) -->
+    <script type="module" src="js/main.js"></script>
+
 </body>
 </html>
